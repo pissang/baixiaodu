@@ -10,6 +10,7 @@ define(function (require) {
     var AmbientLight = require('qtek/light/Ambient');
     var OrbitControl = require('qtek/plugin/OrbitControl');
     var TextureCube = require('qtek/TextureCube');
+    var Texture = require('qtek/Texture');
     var textureUtil = require('qtek/util/texture');
     var Vector3 = require('qtek/math/Vector3');
 
@@ -30,8 +31,9 @@ define(function (require) {
     scene.add(root);
 
     var envTexture = new TextureCube({
-        width: 512,
-        height: 512
+        width: 256,
+        height: 256
+        // type: Texture.FLOAT
     });
     textureUtil.loadPanorama('asset/env.hdr', envTexture, renderer, {
         exposure: 2.0
@@ -39,10 +41,10 @@ define(function (require) {
 
     // Light
     scene.add(new AmbientLight({
-        intensity: 0.6
+        intensity: 0.8
     }));
     var light = new DirectionalLight({
-        intensity: 0.4
+        intensity: 0.3
     });
     light.position.set(1, 1, 1);
     light.lookAt(scene.position);
@@ -53,8 +55,10 @@ define(function (require) {
         includeCamera: false,
         includeLight: false
     });
-    loader.load('asset/baixiaodu2.json');
+    loader.load('asset/baixiaodu-anim.json');
     loader.success(function (res) {
+        console.log(res.clip);
+
         var animation = new Animation();
         var control = new OrbitControl({
             target: camera,
@@ -70,8 +74,19 @@ define(function (require) {
             material.set('specularColor', [0.15, 0.15, 0.15]);
         }
 
+        res.clip.playbackRate = 1.5;
+        animation.addClip(res.clip);
+
         animation.on('frame', function (deltaTime) {
             control.update(true);
+
+            res.clip.jointClips.forEach(function (jointClip) {
+                var node = scene.getNode(jointClip.name);
+                node.position.setArray(jointClip.position);
+                node.rotation.setArray(jointClip.rotation);
+                node.scale.setArray(jointClip.scale);
+            });
+
             renderer.render(scene, camera);
         });
     });
