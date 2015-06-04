@@ -67,7 +67,7 @@ define(function (require) {
             material.shader.enableTexture('environmentMap');
             material.set('environmentMap', envTexture);
             material.set('glossiness', 0.7);
-            material.set('specularColor', [0.1, 0.1, 0.1]);
+            material.set('specularColor', [0.15, 0.15, 0.15]);
         }
 
         animation.on('frame', function (deltaTime) {
