@@ -18,17 +18,18 @@
     <canvas id="main"></canvas>
     
     <script src="http://s1.bdstatic.com/r/www/cache/ecom/esl/2-0-6/esl.js"></script>
+    <script src="lib/qtek.amd.min.js"></script>
     <script>
-        require.config({
-            paths: {
-                text: '../qtek/tests/text'
-            },
-            packages: [{
-                name: 'qtek',
-                location: '../qtek/src',
-                main: 'qtek.amd'
-            }]
-        });
+        // require.config({
+        //     paths: {
+        //         text: '../qtek/tests/text'
+        //     },
+        //     packages: [{
+        //         name: 'qtek',
+        //         location: '../qtek/src',
+        //         main: 'qtek.amd'
+        //     }]
+        // });
 
         require(['js/main']);
     </script>
